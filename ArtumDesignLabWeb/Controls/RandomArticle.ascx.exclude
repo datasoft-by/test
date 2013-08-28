@@ -1,0 +1,11 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="RandomArticle.ascx.cs" Inherits="ArtumDesignLab.UI.Controls_RandomArticle" %>
+<%@ Import Namespace="ArtumDesignLab.Utils" %>
+
+<div class="anons-holder article-anons">
+	<h2>Случайная статья</h2>
+    <asp:HyperLink ID="hlArticleImage" runat="server"><asp:Image ID="imgArticleImg" runat="server" /></asp:HyperLink>
+	<h3><asp:HyperLink ID="hlArticleTitle" runat="server" /></h3>
+	<div class="list-link">
+		/ <a href="<%= SiteHelper.GetWebPath("~/Articles.aspx") %>">все статьи</a>
+	</div>
+</div>

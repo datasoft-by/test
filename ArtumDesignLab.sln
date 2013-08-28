@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ArtumDesignLabWeb", "ArtumDesignLabWeb\", "{1F4C2F16-DB4A-48E2-A27E-E0CFDA8BDE75}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		ProjectReferences = "{A9A7E0F5-3A8D-41E5-A7D0-A562F7FF75DC}|ArtumDesignLabData.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/ArtumDesignLabWeb"
+		Debug.AspNetCompiler.PhysicalPath = "ArtumDesignLabWeb\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ArtumDesignLabWeb\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/ArtumDesignLabWeb"
+		Release.AspNetCompiler.PhysicalPath = "ArtumDesignLabWeb\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ArtumDesignLabWeb\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "37777"
+		VWDDynamicPort = "false"
+		VWDVirtualPath = "/"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtumDesignLabData", "ArtumDesignLabData\ArtumDesignLabData.csproj", "{A9A7E0F5-3A8D-41E5-A7D0-A562F7FF75DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F4C2F16-DB4A-48E2-A27E-E0CFDA8BDE75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4C2F16-DB4A-48E2-A27E-E0CFDA8BDE75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4C2F16-DB4A-48E2-A27E-E0CFDA8BDE75}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4C2F16-DB4A-48E2-A27E-E0CFDA8BDE75}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{A9A7E0F5-3A8D-41E5-A7D0-A562F7FF75DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A7E0F5-3A8D-41E5-A7D0-A562F7FF75DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A7E0F5-3A8D-41E5-A7D0-A562F7FF75DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A7E0F5-3A8D-41E5-A7D0-A562F7FF75DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

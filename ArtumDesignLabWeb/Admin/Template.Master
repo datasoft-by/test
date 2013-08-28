@@ -1,0 +1,56 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Template.Master.cs" Inherits="ArtumDesignLab.Admin.Template" %>
+<%@ Register src="controls/MenuControl.ascx" tagname="MenuControl" tagprefix="uc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <title>Административная панель</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="main_content">
+            <div class="left_nav">
+            <div class="left_head">
+                <div class="left_nav_logo">
+                 
+                </div>
+            </div>
+			 <div class="menu">
+			   <div class="menu_top">
+			     <div class="menu_bot">
+  			       <div class="menu_pad">
+                     
+				       <uc1:MenuControl ID="menuControl" runat="server" />
+                     
+				   </div>
+				 </div>
+			   </div>	
+             </div>
+            </div>
+            <div id="main_body">
+                <div class="header">
+                    <div class="header_welcome">
+                    </div>
+                    <div class="main_quit">
+
+                    </div>
+                    <div class="clear_line"></div>
+                </div> 
+                <div id="center">
+                    <asp:ContentPlaceHolder ID="cntpCenter" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+                <div class="footer">
+                        <a href="http://www.artumstudio.ru">Личный кабинет работает благодаря Черному Максиму</a>
+                        <br /><br />
+                        Copyright &copy; 2010 Студия интерьеров
+                </div>
+                
+            </div>
+            <div class="clear_line"></div>
+        </div>
+   </form>
+</body>
+</html>

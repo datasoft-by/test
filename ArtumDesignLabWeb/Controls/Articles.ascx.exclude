@@ -1,0 +1,19 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Articles.ascx.cs" Inherits="ArtumDesignLab.UI.Controls_Articles" %>
+<%@ Import Namespace="ArtumDesignLab.Utils" %>
+
+<div class="anons-holder">
+	<h2>Статьи</h2>
+	<ul class="anons-list">
+        <asp:Repeater ID="rptItems" runat="server">
+        <ItemTemplate>
+		<li>
+			<p class="date"><%# DateTimeHelper.GetDateInReadableFormat((DateTime)Eval("Date")) %></p>
+			<h3><a href="<%# SiteHelper.GetWebPath(Eval("Link").ToString()) %>"><%# Eval("Header") %></a></h3>
+		</li>
+        </ItemTemplate>
+        </asp:Repeater>
+	</ul>
+	<div class="list-link">
+		/ <a href="<%= SiteHelper.GetWebPath("Articles.aspx") %>">все статьи</a>
+	</div>
+</div>

@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="u199963_avto" Class="SiteDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=u199963.mssql.masterhost.ru;Initial Catalog=u199963_avto;Persist Security Info=True;User ID=u199963" SettingsObjectName="ArtumDesignLab.Properties.Settings" SettingsPropertyName="u199963_avtoConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BlogCategories" Member="BlogCategories">
+    <Type Name="BlogCategory">
+      <Column Name="BlogCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Association Name="BlogCategory_Blog" Member="Blogs" ThisKey="BlogCategoryID" OtherKey="BlogCategoryID" Type="Blog" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Works" Member="Works">
+    <Type Name="Work">
+      <Column Name="WorkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="WorkCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Header" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="Work_WorkPhoto" Member="WorkPhotos" ThisKey="WorkID" OtherKey="WorkID" Type="WorkPhoto" />
+      <Association Name="Work_WorkQuickLink" Member="WorkQuickLinks" ThisKey="WorkID" OtherKey="WorkID" Type="WorkQuickLink" />
+      <Association Name="WorkCategory_Work" Member="WorkCategory" ThisKey="WorkCategoryID" OtherKey="WorkCategoryID" Type="WorkCategory" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BlogPhotos" Member="BlogPhotos">
+    <Type Name="BlogPhoto">
+      <Column Name="BlogPhotoID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BlogID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Association Name="Blog_BlogPhoto" Member="Blog" ThisKey="BlogID" OtherKey="BlogID" Type="Blog" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BlogQuickLinks" Member="BlogQuickLinks">
+    <Type Name="BlogQuickLink">
+      <Column Name="BlogQuickLinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BlogID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubmenuLinkID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="URL" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="BlogQuickLink_BlogQuickLink" Member="BlogQuickLinks" ThisKey="BlogQuickLinkID" OtherKey="SubmenuLinkID" Type="BlogQuickLink" />
+      <Association Name="BlogQuickLink_BlogQuickLink" Member="BlogQuickLink1" ThisKey="SubmenuLinkID" OtherKey="BlogQuickLinkID" Type="BlogQuickLink" IsForeignKey="true" />
+      <Association Name="Blog_BlogQuickLink" Member="Blog" ThisKey="BlogID" OtherKey="BlogID" Type="Blog" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Blogs" Member="Blogs">
+    <Type Name="Blog">
+      <Column Name="BlogID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BlogCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Header" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="PreviewText" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+      <Column Name="Placeholder" Type="System.String" CanBeNull="true" />
+      <Association Name="Blog_BlogPhoto" Member="BlogPhotos" ThisKey="BlogID" OtherKey="BlogID" Type="BlogPhoto" />
+      <Association Name="Blog_BlogQuickLink" Member="BlogQuickLinks" ThisKey="BlogID" OtherKey="BlogID" Type="BlogQuickLink" />
+      <Association Name="BlogCategory_Blog" Member="BlogCategory" ThisKey="BlogCategoryID" OtherKey="BlogCategoryID" Type="BlogCategory" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BlogTeasers" Member="BlogTeasers">
+    <Type Name="BlogTeaser">
+      <Column Name="BlogTeaserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BlogID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TeaserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Teaser_BlogTeaser" Member="Teaser" ThisKey="TeaserID" OtherKey="TeaserID" Type="Teaser" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomData" Member="CustomDatas">
+    <Type Name="CustomData">
+      <Column Name="CustomDataID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.News" Member="News">
+    <Type Name="New">
+      <Column Name="NewID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Header" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PorfolioTeasers" Member="PorfolioTeasers">
+    <Type Name="PorfolioTeaser">
+      <Column Name="PortfolioTeaserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TeaserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Teaser_PorfolioTeaser" Member="Teaser" ThisKey="TeaserID" OtherKey="TeaserID" Type="Teaser" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectCategories" Member="ProjectCategories">
+    <Type Name="ProjectCategory">
+      <Column Name="ProjectCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Text" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+      <Association Name="ProjectCategory_Project" Member="Projects" ThisKey="ProjectCategoryID" OtherKey="ProjectCategoryID" Type="Project" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectPhotoCategories" Member="ProjectPhotoCategories">
+    <Type Name="ProjectPhotoCategory">
+      <Column Name="ProjectPhotoCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="ProjectPhotoCategory_ProjectPhoto" Member="ProjectPhotos" ThisKey="ProjectPhotoCategoryID" OtherKey="ProjectPhotoCategoryID" Type="ProjectPhoto" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectPhotos" Member="ProjectPhotos">
+    <Type Name="ProjectPhoto">
+      <Column Name="ProjectPhotoID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProjectPhotoCategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProjectPhotoPath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectPhotoThumb" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectPhotoName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="ProjectPhotoCategory_ProjectPhoto" Member="ProjectPhotoCategory" ThisKey="ProjectPhotoCategoryID" OtherKey="ProjectPhotoCategoryID" Type="ProjectPhotoCategory" IsForeignKey="true" />
+      <Association Name="Project_ProjectPhoto" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectQuickLinks" Member="ProjectQuickLinks">
+    <Type Name="ProjectQuickLink">
+      <Column Name="ProjectQuickLinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubmenuLinkID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="URL" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="ProjectQuickLink_ProjectQuickLink" Member="ProjectQuickLinks" ThisKey="ProjectQuickLinkID" OtherKey="SubmenuLinkID" Type="ProjectQuickLink" />
+      <Association Name="ProjectQuickLink_ProjectQuickLink" Member="ProjectQuickLink1" ThisKey="SubmenuLinkID" OtherKey="ProjectQuickLinkID" Type="ProjectQuickLink" IsForeignKey="true" />
+      <Association Name="Project_ProjectQuickLink" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Responses" Member="Responses">
+    <Type Name="Response">
+      <Column Name="ResponseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Facebook" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Twitter" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Vkontakte" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Text" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Post" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Position" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Contacts" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SpecialOffer" Member="SpecialOffers">
+    <Type Name="SpecialOffer">
+      <Column Name="SpecialOfferID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Discount" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="OldPrice" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="NewPrice" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Teasers" Member="Teasers">
+    <Type Name="Teaser">
+      <Column Name="TeaserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+      <Column Name="Link" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Association Name="Teaser_BlogTeaser" Member="BlogTeasers" ThisKey="TeaserID" OtherKey="TeaserID" Type="BlogTeaser" />
+      <Association Name="Teaser_PorfolioTeaser" Member="PorfolioTeasers" ThisKey="TeaserID" OtherKey="TeaserID" Type="PorfolioTeaser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WorkCategories" Member="WorkCategories">
+    <Type Name="WorkCategory">
+      <Column Name="WorkCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Text" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="WorkCategory_Work" Member="Works" ThisKey="WorkCategoryID" OtherKey="WorkCategoryID" Type="Work" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WorkPhotos" Member="WorkPhotos">
+    <Type Name="WorkPhoto">
+      <Column Name="WorkPhotoID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="WorkID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Association Name="Work_WorkPhoto" Member="Work" ThisKey="WorkID" OtherKey="WorkID" Type="Work" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WorkQuickLinks" Member="WorkQuickLinks">
+    <Type Name="WorkQuickLink">
+      <Column Name="WorkQuickLinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="WorkID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubmenuLinkID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="URL" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="Work_WorkQuickLink" Member="Work" ThisKey="WorkID" OtherKey="WorkID" Type="Work" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Courses" Member="Courses">
+    <Type Name="Course">
+      <Column Name="CourseID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Surname" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CouponNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ReferenceSource" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="CourseNumber" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Summ" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TransactionId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PersonnelCategories" Member="PersonnelCategories">
+    <Type Name="PersonnelCategory">
+      <Column Name="PersonnelCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Association Name="PersonnelCategory_Personnel" Member="Personnels" ThisKey="PersonnelCategoryID" OtherKey="PersonnelCategoryID" Type="Personnel" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Projects" Member="Projects">
+    <Type Name="Project">
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProjectCategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProjectName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ProjectThumb" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectDescription" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectKeyWords" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectTitle" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectText" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+      <Column Name="Place" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DesignerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Project_ProjectPhoto" Member="ProjectPhotos" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProjectPhoto" />
+      <Association Name="Project_ProjectQuickLink" Member="ProjectQuickLinks" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProjectQuickLink" />
+      <Association Name="ProjectCategory_Project" Member="ProjectCategory" ThisKey="ProjectCategoryID" OtherKey="ProjectCategoryID" Type="ProjectCategory" IsForeignKey="true" />
+      <Association Name="Personnel_Project" Member="Personnel" ThisKey="DesignerID" OtherKey="PersonnelID" Type="Personnel" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Personnel" Member="Personnels">
+    <Type Name="Personnel">
+      <Column Name="PersonnelID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PersonnelCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ThumbImage" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Styles" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+      <Column Name="Place" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Experience" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Personnel_Project" Member="Projects" ThisKey="PersonnelID" OtherKey="DesignerID" Type="Project" />
+      <Association Name="Personnel_Question" Member="Questions" ThisKey="PersonnelID" OtherKey="DesignerID" Type="Question" />
+      <Association Name="PersonnelCategory_Personnel" Member="PersonnelCategory" ThisKey="PersonnelCategoryID" OtherKey="PersonnelCategoryID" Type="PersonnelCategory" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Questions" Member="Questions">
+    <Type Name="Question">
+      <Column Name="QuestionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="QuestionText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AnswerText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DesignerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Visible" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="Personnel_Question" Member="Personnel" ThisKey="DesignerID" OtherKey="PersonnelID" Type="Personnel" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GetNewId" Method="GetNewId" IsComposable="true">
+    <Return Type="System.Guid" />
+  </Function>
+</Database>

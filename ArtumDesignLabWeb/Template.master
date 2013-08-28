@@ -1,0 +1,297 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Template.master.cs" Inherits="ArtumDesignLab.UI.TemplateBase" %>
+
+<%@ Import Namespace="ArtumDesignLab.Utils" %>
+<!DOCTYPE html>
+<html>
+<head id="headCont" runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-language" content="ru" />
+    <meta name="copyright" content="Artum Design Studio 2012" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="robots" content="all" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <asp:ContentPlaceHolder ID="headContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <link rel="icon" href="/images/favicon.gif" type="image/x-icon" />
+    <link rel="shortcut icon" href="/images/favicon.gif" type="image/x-icon" />
+    <link href="/Content/NewDesign/css/style.css" rel="stylesheet" type="text/css" />
+    <!--[if lte IE 9]>
+    <link href="/Content/NewDesign/css/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <!--[if IE 8]>
+    <link href="/Content/NewDesign/css/ie8.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <!--[if IE 7]>
+    <link href="/Content/NewDesign/css/ie7.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <link href="/css/skin.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/NewDesign/css/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css" />
+    <link href="/js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css"
+        media="screen" />
+    <%-- Merged: --%>
+    <%--
+    script type="text/javascript" src="/js/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.jcarousel.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.lightbox-0.5.min.js"></script>
+    <script type="text/javascript" src="/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+    <script type="text/javascript" src="/js/popup.js"></script>
+    <script type="text/javascript" src="/js/ui.js"></script>
+    --%>
+    <script type="text/javascript" src="/js/merged/libs1.js"></script>
+    <script type="text/javascript" src="/js/merged/jquery.placeholder.min.js"></script>
+    <%--<script type="text/javascript" src="/js/merged/fade_script.js"></script> --%>
+    <%= Session["Script"] %>
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script>    
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&status=0";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));
+    </script>    
+    <form id="mainForm" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" />
+    <div id="main">
+        <div id="header">
+            <div class="header-content">
+                <a href="http://www.artumstudio.ru">
+                <div class="page-name">
+                </div></a>
+                <div class="h1_header">
+                    Студия дизайна интерьера Artum
+                    <br />
+                    <span>
+                        <%= Session["InCurrentCity"] %></span>
+                </div>
+                    <div class="phone">
+                        <%--<strong id="call_phone_1">--%><strong><%= Session["ContactPhone"] %></strong><br />
+                        <div style="font-size: 22px; text-align: right;">
+                            Есть вопросы? Звоните!</div>
+                        <div style="text-align: right;">
+                            <a  class="callorder2_btn call_link" href="#call-window-short">Заказать звонок</a>
+                            <a id="call_order_link" class="callorder2_btn call_link" style="display:none" href="#call-window">Заказать звонок</a>
+                       </div>
+                        <div style="display: none;">
+                            <div id="call-window">
+                                <at:CallOrderFull ID="callOrder" runat="server" />
+                            </div>
+                        </div>
+                        <div style="display: none;">
+                            <div id="call-window-short">
+                                <at:CallOrderShort ID="callOrderShort" runat="server" />
+                            </div>
+                        </div>
+                    </div>
+                <div style="font-size: 16px; font-weight: bold; padding-left: 15px; height: 50px;">
+                    <asp:ContentPlaceHolder ID="TitleContent" runat="server">
+                        Мы создаем дизайн-проекты квартир, домов и офисов качественно и в срок
+                    </asp:ContentPlaceHolder>
+                </div>
+                <div class="nav-holder">
+                    <a href="http://www.artumstudio.ru">
+                        <div class="logo">
+                        </div>
+                    </a>
+                    <at:MainMenu ID="mainMenu" runat="server" />
+                </div>
+            </div>
+        </div>
+        <div id="content" class="clearfix">
+            <div class="side-bar">
+                <asp:ContentPlaceHolder ID="sidebarContent" runat="server">
+                    <at:OurWorks ID="OurWorks" runat="server" />
+                    <at:CallOrderSidebar ID="callOrderSidebar" runat="server" />
+                    <at:ResponseControl ID="response" runat="server" />
+                    <at:Portfolio ID="Portfolio1" runat="server" />
+                    <at:SpecialOfferSide ID="specialOfferSide" runat="server" />
+                    <at:ContactInfo ID="contactInfo" runat="server" />
+                    <%--
+                <noindex>
+                <at:CallOrderSidebar id="callOrderSidebar" runat="server" />
+                <at:SpecialOfferSide ID="specialOfferSide" runat="server" />   
+                <at:Portfolio ID="Portfolio1" runat="server" />
+                <at:News id="news" runat="server" />
+                <at:ResponseControl ID="response" runat="server" />
+                  <at:OurWorks ID="OurWorks" runat="server" />
+                  <at:ContactInfo ID="contactInfo" runat="server" />
+                </noindex>
+                    --%>
+                </asp:ContentPlaceHolder>
+                <asp:ContentPlaceHolder ID="sidebarServices" runat="server">
+                    <div class="portfolio-block">
+                        <h3>
+                            Услуги:</h3>
+                        <ul class="portfolio-list">
+                            <li><a href="<%= SiteHelper.GetWebPath("~/Services/Flat.aspx") %>">Дизайн проекты квартир</a></li>
+                            <li><a href="<%= SiteHelper.GetWebPath("~/Services/House.aspx") %>">Дизайн проекты загородных
+                                домов</a></li>
+                            <li><a href="<%= SiteHelper.GetWebPath("~/Services/Public.aspx") %>">Дизайн проекты
+                                общественных помещений</a></li>
+                            <li><a href="<%= SiteHelper.GetWebPath("~/Services/Office.aspx") %>">Дизайн проекты
+                                офисов</a></li>
+                            <li><a href="<%= SiteHelper.GetWebPath("~/Services/arhproject.aspx") %>">Архитектурное
+                                проектирование</a></li>
+                        </ul>
+                    </div>
+                </asp:ContentPlaceHolder>
+                <asp:ContentPlaceHolder ID="sidebarPopular" runat="server">
+                    <div class="portfolio-block">
+                        <h3>
+                            Популярное:</h3>
+                        <ul class="portfolio-list">
+                            <li>
+                                <asp:HyperLink ID="hlPopular1" runat="server" /></li>
+                            <li>
+                                <asp:HyperLink ID="hlPopular2" runat="server" /></li>
+                            <li>
+                                <asp:HyperLink ID="hlPopular3" runat="server" /></li>
+                            <li>
+                                <asp:HyperLink ID="hlPopular4" runat="server" /></li>
+                        </ul>
+                    </div>
+                    <at:News ID="news" runat="server" Visible="false" />
+                </asp:ContentPlaceHolder>
+                <%--<div class="social">
+                <img src="/Content/NewDesign/images/Temp/social.png" width="305" height="526" alt="Социалки" />
+            </div>--%>
+            </div>
+            <div class="page-side">
+                <asp:ContentPlaceHolder ID="specialOfferContent" runat="server">
+                    <at:SpecialOffer Header="Планировочное решение - бесплатно!" ID="specialOffer" runat="server" />
+                </asp:ContentPlaceHolder>
+                <asp:ContentPlaceHolder ID="basicContent" runat="server" />
+                <%--<at:Gallery ID="gallery" runat="server" />--%>
+            </div>
+            <%--yandex share--%>
+            <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="button" data-yashareQuickServices="yaru,vkontakte,facebook,twitter,odnoklassniki,moimir">
+            </div> 
+        </div>
+    </div>
+    <div id="footer">
+        <div class="footer-content">
+            <div class="logo">
+            </div>
+            <ul class="footer-nav">
+                <li><a href="http://www.artumstudio.ru/">Студия дизайна интерьера квартиры</a></li>
+                <li><a href="http://www.artumstudio.ru/services/house">Дизайн проект загородного дома</a></li>
+                <li><a href="http://www.artumstudio.ru/designproject">Дизайн проект</a></li>
+                <li><a href="http://www.artumstudio.ru/services/office">Дизайн проект офиса</a></li>
+                <!--
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_salonov_krasoty">Дизайн салона красоты</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_kvartiry">Дизайн квартиры</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_ofisa">Дизайн офиса</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_interera_zagorodnogo_doma">Дизайн интерьера загородного дома</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_doma">Дизайн дома</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_proekt_doma">Дизайн проект дома</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_interera_doma">Дизайн интерьера дома</a></li>
+             <li style="margin-top:2px;"><a href="http://www.artumstudio.ru/blog/dizajn_zagorodnogo_doma">Дизайн загородного дома</a></li>
+             -->
+            </ul>
+            <div class="address">
+                <a href="mailto:info@artumstudio.ru">info@artumstudio.ru</a>
+                <div class="phone">
+                    <%--id="call_phone_3"--%>
+                    <%= Session["ContactPhone"] %>
+                </div>
+                <div style="margin-top: 10px;">
+                </div>
+                <!--LiveInternet counter-->
+                <script type="text/javascript"><!--
+                    document.write("<a href='http://www.liveinternet.ru/click' " +
+"target=_blank><img src='//counter.yadro.ru/hit?t11.6;r" +
+escape(document.referrer) + ((typeof (screen) == "undefined") ? "" :
+";s" + screen.width + "*" + screen.height + "*" + (screen.colorDepth ?
+screen.colorDepth : screen.pixelDepth)) + ";u" + escape(document.URL) +
+";" + Math.random() +
+"' alt='' title='LiveInternet: показано число просмотров за 24" +
+" часа, посетителей за 24 часа и за сегодня' " +
+"border='0' width='88' height='31'><\/a>")
+//--></script>
+                <!--/LiveInternet-->
+            </div>
+            <div class="requisites">
+                <h4>
+                    Наши реквизиты:</h4>
+                <p>
+                    ИНН 7802726946 / КПП 780201001<br />
+                    ОГРН 1107847324518</p>
+                <a href="http://www.artumstudio.ru/sitemap" rel="nofollow">Карта сайта</a>
+            </div>
+            <div class="schema">
+                <a href="http://maps.google.ru/maps?q=%D0%A1%D1%82%D1%83%D0%B4%D0%B8%D1%8F+%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B0+%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%8C%D0%B5%D1%80%D0%B0+%D0%90%D1%80%D1%82%D1%83%D0%BC&hl=ru&ie=UTF8&view=map&cid=13441673835722570009&z=16&iwloc=A">
+                    Схема проезда</a>
+            </div>
+            <div class="call-order">
+                <a href="#call-window-short" class="callorder2_btn button-var">Заказ звонка</a>
+            </div>
+            <div style="padding-top: 80px; padding-bottom: 10px; line-height: 1.2; color: #F1C5A9;
+                font-size: 10px; text-align: center;">
+                Москва — <%= ConfigurationManager.AppSettings.Get("PhoneDefaultMoscow")%>. Санкт-Петербург — <span>
+                    <%= Session["CityToEmail"].ToString().Equals("Санкт-Петербург") ? Session["ContactPhone"] : ConfigurationManager.AppSettings.Get("PhoneDefaultSanktPetersburg")%></span>.
+                Новосибирск, Екатеринбург, Нижний Новгород,<br />
+                Самара, Казань, Омск, Челябинск, Ростов-на-Дону, Уфа, Волгоград, Пермь, Красноярск,
+                Воронеж, Краснодар, Пенза,<br />
+                Рязань, Саратов, Тольятти, Волгоград, Астрахань, Владивосток, Ярославль, Ульяновск,
+                Барнаул, Иркутск, Тюмень,<br />
+                Хабаровск, Новокузнецк, Оренбург, Кемерово, Ижевск, Томск, Набережные Челны, Липецк
+                — <%= ConfigurationManager.AppSettings.Get("PhoneRussia8800")%>.
+            </div>
+        </div>
+    </div>
+    </form>
+    <script type='text/javascript'>        /* build:::7 */
+        var liveTex = true,
+        liveTexID = 26852,
+        liveTex_object = true;
+        (function () {
+            var lt = document.createElement('script');
+            lt.type = 'text/javascript';
+            lt.async = true;
+            lt.src = 'http://cs15.livetex.ru/js/client.js';
+            var sc = document.getElementsByTagName('script')[0];
+            if (sc) sc.parentNode.insertBefore(lt, sc);
+            else document.documentElement.firstChild.appendChild(lt);
+        })();
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter10990261 = new Ya.Metrika({ id: 10990261,
+                        webvisor: true,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true,
+                        trackHash: true
+                    });
+                } catch (e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript>
+        <div>
+            <img src="//mc.yandex.ru/watch/10990261" style="position: absolute; left: -9999px;"
+                alt="" />
+        </div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+    <script type="text/javascript" src="/js/merged/userscripts1.js"></script>
+</body>
+</html>

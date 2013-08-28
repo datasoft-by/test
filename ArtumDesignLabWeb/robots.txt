@@ -1,0 +1,21 @@
+User-agent: *
+Disallow: /category/
+Disallow: /context/
+Disallow: /clients
+Disallow: /partners
+Disallow: /works
+Disallow: /mebel
+Disallow: /blog?
+Disallow: /portfolio?
+
+User-agent: Yandex
+Disallow: /category/
+Disallow: /context/
+Disallow: /clients
+Disallow: /partners
+Disallow: /works
+Disallow: /mebel
+Disallow: /blog?
+Disallow: /portfolio?
+Host: www.artumstudio.ru
+Sitemap: http://www.artumstudio.ru/sitemap.xml

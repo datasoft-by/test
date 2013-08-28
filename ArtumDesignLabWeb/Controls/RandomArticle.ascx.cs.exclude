@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using ArtumDesignLab.Biz;
+using ArtumDesignLab.Utils;
+
+namespace ArtumDesignLab.UI
+{
+    public partial class Controls_RandomArticle : System.Web.UI.UserControl
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            BindArticle();
+        }
+
+        private void BindArticle()
+        {
+            ArticleEntity articleEntity = new ArticleEntity();
+            Article article = articleEntity.GetCustomArticle();
+
+            imgArticleImg.ImageUrl = SiteHelper.GetWebPath("~/Content/" + article.ArticlePhoto);
+            imgArticleImg.AlternateText = article.ArticleHeader;
+
+            hlArticleTitle.ToolTip = hlArticleImage.ToolTip = article.ArticleHeader;
+            hlArticleTitle.NavigateUrl = hlArticleImage.NavigateUrl = SiteHelper.GetWebPath("~/Article.aspx") + "?id=" + article.Article_Id;
+            hlArticleTitle.Text = article.ArticleHeader;
+        }
+    }
+}
