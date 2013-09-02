@@ -4,7 +4,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cntpCenter" runat="Server">
     <div class="main_body_header">
         Блог 
-        <script type="text/javascript">document.write(escapeAll('<a href="mailto:id@artumstudio.ru">id@artumstudio.ru</a>'));</script>
     </div>
     <table width="800px">
         <tr>
@@ -12,7 +11,9 @@
                 Категория
             </td>
             <td>
-                <asp:DropDownList ID="ddlCategories" runat="server" DataTextField="Name" DataValueField="BlogCategoryID" />
+                <dx:ASPxComboBox ID="cmbCategories" TextField="Name" ValueField="BlogCategoryID"
+                    runat="server" ValueType="System.String">
+                </dx:ASPxComboBox>
              </td>
         </tr>
         <tr>
@@ -75,7 +76,6 @@
                 Текст
             </td>
             <td>
-              
                 <dx:ASPxHtmlEditor ID="htmlText" runat="server">
                     <SettingsImageUpload UploadImageFolder="~/Content/Images/Blog/">
                         <ValidationSettings AllowedContentTypes="image/jpeg,image/pjpeg,image/gif,image/png,image/x-png">
@@ -94,25 +94,41 @@
     </table>
     Список постов
     <br />
-    <dx:ASPxGridView  ID="BlogGridView" runat="server" AutoGenerateColumns="False" DataSourceID="LinqDataSource1" KeyFieldName="BlogID" PreviewFieldName="PreviewText"
-             SettingsPager-PageSize="50"><%--OnRowUpdating="BlogGridView_RowUpdating" OnRowDeleting="BlogGridView_RowDeleting"--%>
+    <dx:ASPxGridView  ID="BlogGridView" runat="server" AutoGenerateColumns="False" DataSourceID="LinqDataSource1" KeyFieldName="BlogID" PreviewFieldName="PreviewText" EnableCallBacks="false"
+             SettingsPager-PageSize="50" OnHtmlRowCreated="BlogGridView_HtmlRowCreated" OnRowUpdating="BlogGridView_RowUpdating" OnRowDeleting="BlogGridView_RowDeleting"><%----%>
         <Templates>
             <EditForm>
-              Title&nbsp;&nbsp;&nbsp;<dx:ASPxTextBox ID="txtBoxTitle" Text='<%# Eval("MetaTitle") %>' runat="server" Width="500"></dx:ASPxTextBox>
-              <br />
-                 Header&nbsp;&nbsp;&nbsp;<dx:ASPxTextBox ID="txtH1" Text='<%# Eval("Header") %>' runat="server" Width="500"></dx:ASPxTextBox>
-              <br />
-                Placeholder&nbsp;&nbsp;&nbsp;<dx:ASPxTextBox ID="txtPlaceholder" Text='<%# Eval("Placeholder") %>' runat="server" Width="500"></dx:ASPxTextBox>
-              <br />
-                <dx:ASPxHtmlEditor ID="TextHtmlEditor" runat="server" Html='<%# Eval("Text") %>'>
+                Категория<br /><asp:DropDownList ID="ddlCategories" DataTextField="Name" DataValueField="BlogCategoryID"
+                    runat="server" DataSourceID="BlogCategoriesDataSource" Width="500" />
+                <br /><br />
+                Meta title<br /><dx:ASPxTextBox ID="txtBoxTitle" Text='<%# Eval("MetaTitle") %>' runat="server"
+                    Width="500">
+                </dx:ASPxTextBox>
+                <br />
+                Meta description<br /><dx:ASPxTextBox ID="txtDescription" Text='<%# Eval("MetaDescription") %>' runat="server"
+                    Width="500">
+                </dx:ASPxTextBox>
+                <br />
+                Meta keywords<br /><dx:ASPxTextBox ID="txtKeywords" Text='<%# Eval("MetaKeywords") %>' runat="server"
+                    Width="500">
+                </dx:ASPxTextBox>
+                <br />
+                Заголовок статьи<br /><dx:ASPxTextBox ID="txtH1" Text='<%# Eval("Header") %>' runat="server"
+                    Width="500">
+                </dx:ASPxTextBox>
+                <br />
+                Placeholder<br /><dx:ASPxTextBox ID="txtPlaceholder" Text='<%# Eval("Placeholder") %>'
+                    runat="server" Width="500">
+                </dx:ASPxTextBox>
+                <br />
+                Текст<br /><dx:ASPxHtmlEditor ID="TextHtmlEditor" runat="server" Html='<%# Eval("Text") %>'>
                     <SettingsImageUpload UploadImageFolder="~/Content/Images/Blog/">
                         <ValidationSettings AllowedContentTypes="image/jpeg,image/pjpeg,image/gif,image/png,image/x-png">
                         </ValidationSettings>
                     </SettingsImageUpload>
                 </dx:ASPxHtmlEditor>
- 
                 <br />
-                <div style="text-align: right; padding: 2px 2px 2px 2px">
+                <div style="text-align: left; padding: 2px 2px 2px 2px">
                     <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
                         runat="server">
                     </dx:ASPxGridViewTemplateReplacement>
@@ -122,8 +138,6 @@
                 </div>
             </EditForm>
         </Templates>
-
-
         <Columns>
             <dx:GridViewCommandColumn VisibleIndex="0">
                 <ClearFilterButton Visible="True" />
@@ -150,7 +164,7 @@
             </dx:GridViewDataDateColumn>
             <dx:GridViewDataTextColumn FieldName="Header" VisibleIndex="3" Caption="Заголовок">
             </dx:GridViewDataTextColumn>
-                        <dx:GridViewDataTextColumn FieldName="Placeholder" VisibleIndex="3" Caption="Placeholder">
+            <dx:GridViewDataTextColumn FieldName="Placeholder" VisibleIndex="3" Caption="Placeholder">
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataTextColumn Caption="URL" FieldName="Url" VisibleIndex="5">
             </dx:GridViewDataTextColumn>
@@ -231,7 +245,7 @@
                     </dx:PopupControlContentControl>
                 </ContentCollection>
             </dx:PopupWindow>
-            <dx:PopupWindow>
+<%--            <dx:PopupWindow>
                 <ContentCollection>
                     <dx:PopupControlContentControl runat="server" SupportsDisabledAttribute="True">
                         <dx:ASPxUploadControl ID="BlogPhotosUploadControl" runat="server" FileInputCount="3"
@@ -242,7 +256,7 @@
                             Text="Сохранить" />
                     </dx:PopupControlContentControl>
                 </ContentCollection>
-            </dx:PopupWindow>
+            </dx:PopupWindow>--%>
         </Windows>
         <ContentCollection>
             <dx:PopupControlContentControl runat="server">

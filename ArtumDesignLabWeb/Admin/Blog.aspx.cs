@@ -19,16 +19,26 @@ public partial class Admin_Blog : System.Web.UI.Page {
 
     private void BindCategories() {
         BlogCategoryEntity blogCategoryEntity = new BlogCategoryEntity();
-        ddlCategories.DataSource = blogCategoryEntity.GetList();
-        ddlCategories.DataBind();
+        cmbCategories.DataSource = blogCategoryEntity.GetList();
+        cmbCategories.DataBind();
 
-        if (ddlCategories.Items.Count > 0)
-            ddlCategories.SelectedIndex = 0;
+        if (cmbCategories.Items.Count > 0)
+            cmbCategories.SelectedIndex = 0;
     }
+
+    protected void BlogGridView_HtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    {
+        if (e.RowType == DevExpress.Web.ASPxGridView.GridViewRowType.EditForm)
+        {
+            DropDownList lst = (BlogGridView.FindEditFormTemplateControl("ddlCategories") as DropDownList);
+            lst.SelectedValue = e.GetValue("BlogCategoryID").ToString();
+        }
+    }
+
 
     protected void btnSave_Click(object sender, EventArgs e) {
         BlogEntity entity = new BlogEntity();
-        entity.Entity.BlogCategoryID = int.Parse(ddlCategories.SelectedItem.Value.ToString());
+        entity.Entity.BlogCategoryID = int.Parse(cmbCategories.SelectedItem.Value.ToString());
         entity.Entity.CreateDate = DateTime.Now;
         entity.Entity.Header = txtHeader.Text;
         entity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
@@ -123,36 +133,36 @@ public partial class Admin_Blog : System.Web.UI.Page {
         e.NewValues["BlogID"] = Session["PostID"];
     }
 
-    protected void AddImagesButton_Click(object sender, EventArgs e) {
-        int postID;
-        if (Session["PostID"] != null && int.TryParse(Session["PostID"].ToString(), out postID)) {
-            foreach (UploadedFile file in BlogPhotosUploadControl.UploadedFiles) {
-                if (file.PostedFile.ContentLength > 0) {
-                    string name = Guid.NewGuid() + ".jpg";
+    //protected void AddImagesButton_Click(object sender, EventArgs e) {
+    //    int postID;
+    //    if (Session["PostID"] != null && int.TryParse(Session["PostID"].ToString(), out postID)) {
+    //        foreach (UploadedFile file in BlogPhotosUploadControl.UploadedFiles) {
+    //            if (file.PostedFile.ContentLength > 0) {
+    //                string name = Guid.NewGuid() + ".jpg";
 
-                    using (System.Drawing.Image img = System.Drawing.Image.FromStream(file.FileContent)) {
-                        using (Bitmap cutted = ImageUtils.CutImage(img, 155, 140)) {
-                            using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 7)) {
-                                rounded.Save(MapPath(Settings.BlogImagesThumbsMedium) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
-                            }
-                        }
+    //                using (System.Drawing.Image img = System.Drawing.Image.FromStream(file.FileContent)) {
+    //                    using (Bitmap cutted = ImageUtils.CutImage(img, 155, 140)) {
+    //                        using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 7)) {
+    //                            rounded.Save(MapPath(Settings.BlogImagesThumbsMedium) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
+    //                        }
+    //                    }
 
-                        using (Bitmap cutted = ImageUtils.CreateThumbnail(img, 900, 800)) {
-                            // TODO: Add watermark
-                            cutted.Save(MapPath(Settings.BlogImagesFullSize) + name,
-                                ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(100L));
-                        }
-                    }
+    //                    using (Bitmap cutted = ImageUtils.CreateThumbnail(img, 900, 800)) {
+    //                        // TODO: Add watermark
+    //                        cutted.Save(MapPath(Settings.BlogImagesFullSize) + name,
+    //                            ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(100L));
+    //                    }
+    //                }
 
-                    BlogPhotoEntity entity = new BlogPhotoEntity();
-                    entity.Entity.BlogID = postID;
-                    entity.Entity.Name = name;
-                    entity.Create();
-                }
-            }
-            ASPxPopupControl1.Windows[1].ShowOnPageLoad = false;
-        }
-    }
+    //                BlogPhotoEntity entity = new BlogPhotoEntity();
+    //                entity.Entity.BlogID = postID;
+    //                entity.Entity.Name = name;
+    //                entity.Create();
+    //            }
+    //        }
+    //        ASPxPopupControl1.Windows[1].ShowOnPageLoad = false;
+    //    }
+    //}
 
     protected void BlogGridView_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e) {
         // Delete post image
@@ -200,9 +210,18 @@ public partial class Admin_Blog : System.Web.UI.Page {
         ASPxTextBox txtboxTitle = BlogGridView.FindEditFormTemplateControl("txtBoxTitle") as ASPxTextBox;
         ASPxTextBox txtH1 = BlogGridView.FindEditFormTemplateControl("txtH1") as ASPxTextBox;
         ASPxTextBox txtPlaceholder = BlogGridView.FindEditFormTemplateControl("txtPlaceholder") as ASPxTextBox;
+        ASPxTextBox txtDescription = BlogGridView.FindEditFormTemplateControl("txtDescription") as ASPxTextBox;
+        ASPxTextBox txtKeywords = BlogGridView.FindEditFormTemplateControl("txtKeywords") as ASPxTextBox;
+        DropDownList ddlCategories = BlogGridView.FindEditFormTemplateControl("ddlCategories") as DropDownList;
         e.NewValues["Text"] = htmlEditor.Html;
         e.NewValues["MetaTitle"] = txtboxTitle.Text;
         e.NewValues["Header"] = txtH1.Text;
         e.NewValues["Placeholder"] = txtPlaceholder.Text;
+        e.NewValues["MetaDescription"] = txtDescription.Text;
+        e.NewValues["MetaKeywords"] = txtKeywords.Text;
+        int categoryId = 0;
+        if(Int32.TryParse(ddlCategories.SelectedValue, out categoryId))
+            e.NewValues["BlogCategoryID"] = categoryId;
+        
     }
 }
