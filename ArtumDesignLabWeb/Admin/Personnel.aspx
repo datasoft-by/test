@@ -52,9 +52,9 @@ CodeFile="Personnel.aspx.cs" Inherits="ArtumDesignLab.Admin.Personnel" ValidateR
         </Columns>
     </dx:ASPxGridView>
 
-    <p>
+<%--    <p>
         Сгенерировать адреса:
-        <asp:Button ID="ButtonGenerate" runat="server" Text="Сгенерировать" OnClick="ButtonGenerate_Click" /></p>
+        <asp:Button ID="ButtonGenerate" runat="server" Text="Сгенерировать" OnClick="ButtonGenerate_Click" /></p>--%>
 
 
     <dx:ASPxPopupControl ID="popUpAddPersonnel" runat="server" HeaderText="Добавить сотрудника"

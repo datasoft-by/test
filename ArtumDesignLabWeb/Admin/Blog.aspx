@@ -189,7 +189,7 @@
             <dx:GridViewDataTextColumn FieldName="Image" VisibleIndex="10" Width="88px" Caption="Изображение">
                 <EditFormSettings Visible="False" />
                 <DataItemTemplate>
-                    <dx:ASPxImage ID="ASPxImage1" runat="server" ImageUrl='<%# SiteHelper.GetWebPath(Settings.BlogImagesThumbsSmall + Eval("Image")) %>'>
+                    <dx:ASPxImage ID="ASPxImage1" runat="server" ImageUrl='<%# Eval("Image") != null ? SiteHelper.GetWebPath(Settings.BlogImagesThumbsSmall + Eval("Image")) : "" %>'>
                     </dx:ASPxImage>
                 </DataItemTemplate>
             </dx:GridViewDataTextColumn>

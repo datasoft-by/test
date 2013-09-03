@@ -102,11 +102,12 @@ namespace ArtumDesignLab.Admin
             if (Int32.TryParse(ddlCategories.SelectedValue, out categoryId))
                 personnelEntity.Entity.PersonnelCategoryID = categoryId;
             personnelEntity.Entity.Name = txtName.Text.Trim();
-            personnelEntity.Entity.Phone = txtPhone.Text;
-            personnelEntity.Entity.Email = txtEmail.Text;
-            personnelEntity.Entity.ThumbImage = txtImage.Text;
-            personnelEntity.Entity.Experience = txtExperience.Text;
-            personnelEntity.Entity.Styles = txtStyles.Text;
+            personnelEntity.Entity.Phone = txtPhone.Text.Trim();
+            personnelEntity.Entity.Email = txtEmail.Text.Trim();
+            personnelEntity.Entity.ThumbImage = txtImage.Text.Trim();
+            personnelEntity.Entity.Experience = txtExperience.Text.Trim();
+            personnelEntity.Entity.Styles = txtStyles.Text.Trim();
+            personnelEntity.Entity.Url = SiteHelper.ConvertNameToUrl(txtName.Text.Trim());
             if (personnelId == 0)
                 personnelId = personnelEntity.Insert();
             else

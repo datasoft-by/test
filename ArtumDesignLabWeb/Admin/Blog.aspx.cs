@@ -41,45 +41,55 @@ public partial class Admin_Blog : System.Web.UI.Page {
         entity.Entity.BlogCategoryID = int.Parse(cmbCategories.SelectedItem.Value.ToString());
         entity.Entity.CreateDate = DateTime.Now;
         entity.Entity.Header = txtHeader.Text;
-        entity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
+        //entity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
         entity.Entity.MetaTitle = txtTitle.Text;
         entity.Entity.MetaDescription = txtDescription.Text;
         entity.Entity.MetaKeywords = txtKeywords.Text;
         entity.Entity.PreviewText = txtPreview.Text;
         entity.Entity.Text = htmlText.Html;
-        
 
-        string tmpName = MapPath(imgImage.ImageUrl);
+        if (!String.IsNullOrEmpty(imgImage.ImageUrl))
+        {
+            string tmpName = MapPath(imgImage.ImageUrl);
 
-        string name = Guid.NewGuid() + ".jpg";
+            string name = Guid.NewGuid() + ".jpg";
 
-        using (Bitmap img = new Bitmap(tmpName)) {
-            // Thumbnail medium
-            using (Bitmap cutted = ImageUtils.CutImage(img, 192, 108)) {
-                using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5)) {
-                    rounded.Save(MapPath(Settings.BlogImagesThumbsMedium) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
+            using (Bitmap img = new Bitmap(tmpName))
+            {
+                // Thumbnail medium
+                using (Bitmap cutted = ImageUtils.CutImage(img, 192, 108))
+                {
+                    using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5))
+                    {
+                        rounded.Save(MapPath(Settings.BlogImagesThumbsMedium) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
+                    }
+                }
+
+                // Thumbnail small
+                using (Bitmap cutted = ImageUtils.CutImage(img, 88, 72))
+                {
+                    using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5))
+                    {
+                        rounded.Save(MapPath(Settings.BlogImagesThumbsSmall) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
+                    }
                 }
             }
 
-            // Thumbnail small
-            using (Bitmap cutted = ImageUtils.CutImage(img, 88, 72)) {
-                using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5)) {
-                    rounded.Save(MapPath(Settings.BlogImagesThumbsSmall) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
+            imgCrop.Crop(tmpName);
+
+            using (Bitmap img = new Bitmap(tmpName))
+            {
+                using (Bitmap cutted = ImageUtils.CutImage(img, 624, 214))
+                {
+                    using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5))
+                    {
+                        rounded.Save(MapPath(Settings.BlogImagesFullSize) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
+                    }
                 }
             }
+
+            entity.Entity.Image = name;
         }
-
-        imgCrop.Crop(tmpName);
-
-        using (Bitmap img = new Bitmap(tmpName)) {
-            using (Bitmap cutted = ImageUtils.CutImage(img, 624, 214)) {
-                using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5)) {
-                    rounded.Save(MapPath(Settings.BlogImagesFullSize) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
-                }
-            }
-        }
-
-        entity.Entity.Image = name;
         entity.Create();
         ClearInput();
 
@@ -166,9 +176,9 @@ public partial class Admin_Blog : System.Web.UI.Page {
 
     protected void BlogGridView_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e) {
         // Delete post image
-        string name = e.Values["Image"].ToString();
-
+ 
         try {
+            string name = e.Values["Image"].ToString();
             File.Delete(MapPath(Settings.BlogImagesThumbsSmall) + name);
             File.Delete(MapPath(Settings.BlogImagesThumbsMedium) + name);
             File.Delete(MapPath(Settings.BlogImagesFullSize) + name);

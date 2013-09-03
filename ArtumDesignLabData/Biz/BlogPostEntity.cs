@@ -57,7 +57,7 @@ namespace ArtumDesignLab.Biz
 
         public IEnumerable<Blog> GetList()
         {
-            return _siteDataContext.Blogs.Select(s => s).OrderByDescending(s => s.CreateDate);
+            return _siteDataContext.Blogs.Select(s => s).OrderByDescending(s => s.CreateDate);//.Where(s => s.Url != null)
         }
 
         public IEnumerable<Blog> GetByCategory(int id)
