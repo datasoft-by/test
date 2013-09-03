@@ -5,14 +5,18 @@
 <%@ Register Assembly="DevExpress.Web.ASPxSpellChecker.v10.1, Version=10.1.12.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
     Namespace="DevExpress.Web.ASPxSpellChecker" TagPrefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cntpCenter" runat="server">
+    <asp:LinqDataSource ID="ProjectCategoriesLinqDataSource" runat="server" ContextTypeName="ArtumDesignLab.SiteDataContext"
+         TableName="ProjectCategories">
+    </asp:LinqDataSource>
     <div class="main_body_header">
-        <asp:DropDownList ID="ddlCategories" runat="server" />
+        <asp:DropDownList ID="ddlCategories" runat="server" DataTextField="Name" DataValueField="ProjectCategoryID"
+            DataSourceID="ProjectCategoriesLinqDataSource" Width="300px"/>
         <asp:Button ID="btnShow" runat="server" Text="Вывести" />
     </div>
     <br />
     <div class="manager_data">
-        <dx:ASPxButton ID="btnAddGirl" runat="server" Text="Добавить проект" AutoPostBack="True"
-            OnClick="btnAddGirl_Click" Width="152px">
+        <dx:ASPxButton ID="btnAddProject" runat="server" Text="Добавить проект" AutoPostBack="True"
+            OnClick="btnAddProject_Click" Width="152px">
         </dx:ASPxButton>
     </div>
     <br />
@@ -236,9 +240,6 @@
                         </td>
                         <td>
                             <asp:Label ID="lblUpdateProjectId" runat="server"></asp:Label>
-                            <asp:LinqDataSource ID="ProjectCategoriesLinqDataSource" runat="server" ContextTypeName="ArtumDesignLab.SiteDataContext"
-                                TableName="ProjectCategories">
-                            </asp:LinqDataSource>
                         </td>
                     </tr>
                     <tr>
@@ -295,23 +296,8 @@
                             Категория
                         </td>
                         <td align="left">
-                            <dx:ASPxComboBox ID="cmbCategoriesPopUp" runat="server" TextField="Name" Width="300px"
-                                ValueField="ProjectCategoryID" CssFilePath="~/App_Themes/Aqua/{0}/styles.css"
-                                CssPostfix="Aqua" ShowShadow="False" ValueType="System.String" LoadingPanelImagePosition="Top"
-                                SpriteCssFilePath="~/App_Themes/Aqua/{0}/sprite.css" DataSourceID="ProjectCategoriesLinqDataSource">
-                                <LoadingPanelImage Url="~/App_Themes/Aqua/Editors/Loading.gif">
-                                </LoadingPanelImage>
-                                <DropDownButton>
-                                    <Image>
-                                        <SpriteProperties HottrackedCssClass="dxEditors_edtDropDownHover_Aqua" PressedCssClass="dxEditors_edtDropDownPressed_Aqua" />
-                                    </Image>
-                                </DropDownButton>
-                                <ValidationSettings>
-                                    <ErrorFrameStyle ImageSpacing="4px">
-                                        <ErrorTextPaddings PaddingLeft="4px" />
-                                    </ErrorFrameStyle>
-                                </ValidationSettings>
-                            </dx:ASPxComboBox>
+                            <asp:DropDownList ID="ddlCategoriesPopUp" runat="server" DataTextField="Name" DataValueField="ProjectCategoryID"
+                                DataSourceID="ProjectCategoriesLinqDataSource" Width="500"  />
                         </td>
                     </tr>
                     <tr>
@@ -333,7 +319,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <dx:ASPxButton ID="btnAdd" runat="server" Text="Добавить" CssFilePath="~/App_Themes/Aqua/{0}/styles.css"
+                            <dx:ASPxButton ID="btnAdd" runat="server" Text="Сохранить" CssFilePath="~/App_Themes/Aqua/{0}/styles.css"
                                 CssPostfix="Aqua" OnClick="btnAdd_Click" SpriteCssFilePath="~/App_Themes/Aqua/{0}/sprite.css">
                             </dx:ASPxButton>
                         </td>
@@ -399,7 +385,7 @@
                             CommandName="Change" CommandArgument='<%# Eval("ProjectID") %>'></asp:LinkButton>
                         <br />
                         <asp:LinkButton ForeColor="Maroon" ID="btnDelete" runat="server" Text='Удалить' CommandName="Delete"
-                            CommandArgument='<%# Eval("ProjectID") %>'></asp:LinkButton>
+                            CommandArgument='<%# Eval("ProjectID") %>' OnClientClick="return confirm('Удалить, Вы уверены?');"></asp:LinkButton>
                         <br />
                         <asp:LinkButton ForeColor="Maroon" ID="btnAddColor" runat="server" Text='Добавить фото'
                             CommandName="AddPhoto" CommandArgument='<%# Eval("ProjectID") %>'></asp:LinkButton>

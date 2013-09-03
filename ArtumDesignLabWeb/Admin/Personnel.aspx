@@ -8,8 +8,8 @@ CodeFile="Personnel.aspx.cs" Inherits="ArtumDesignLab.Admin.Personnel" ValidateR
     </div>
     <br />
     <div class="manager_data">
-        <dx:ASPxButton ID="btnAddPersonnel" runat="server" Text="Добавить" AutoPostBack="True"
-            OnClick="btnAddPersonnel_Click" Width="152px">
+        <dx:ASPxButton ID="btnAddNew" runat="server" Text="Добавить" AutoPostBack="True"
+            OnClick="btnAddNew_Click" Width="152px">
         </dx:ASPxButton>
     </div>
     <br />
@@ -19,15 +19,18 @@ CodeFile="Personnel.aspx.cs" Inherits="ArtumDesignLab.Admin.Personnel" ValidateR
 
     <dx:ASPxGridView ID="PersonnelGridView" runat="server" Width="1130" 
         AutoGenerateColumns="False" DataSourceID="PersonnelDataSource"
-        KeyFieldName="PersonnelID">
+        KeyFieldName="PersonnelID" OnRowCommand="PersonnelGridView_RowCommand">
         <SettingsPager PageSize="20"></SettingsPager>
         <Columns>
-            <dx:GridViewCommandColumn VisibleIndex="0" Caption="Action" Width="45" CellStyle-Wrap="Default">
-                <EditButton Visible="True">
-                </EditButton>
-                <DeleteButton Visible="True" Text="Del">
-                </DeleteButton>
-            </dx:GridViewCommandColumn>
+            <dx:GridViewDataHyperLinkColumn VisibleIndex="0">
+                <DataItemTemplate>
+                    <asp:LinkButton ID="btnChange" runat="server" Text='Изменить'
+                        CommandName="Change" CommandArgument='<%# Eval("PersonnelID") %>'></asp:LinkButton>
+                    <br />
+                    <asp:LinkButton ID="btnDelete" runat="server" Text='Удалить' CommandName="Delete"
+                        CommandArgument='<%# Eval("PersonnelID") %>' OnClientClick="return confirm('Удалить, Вы уверены?');"></asp:LinkButton>
+               </DataItemTemplate>
+            </dx:GridViewDataHyperLinkColumn>
             <dx:GridViewDataTextColumn FieldName="Place" ReadOnly="True" VisibleIndex="0" Width="20">
             </dx:GridViewDataTextColumn>
             <dx:GridViewDataTextColumn FieldName="PersonnelCategory.Name" Caption="Position" ReadOnly="True" VisibleIndex="0" Width="20">
@@ -84,91 +87,74 @@ CodeFile="Personnel.aspx.cs" Inherits="ArtumDesignLab.Admin.Personnel" ValidateR
                     </tr>
                     <tr>
                         <td>
-                            Название проекта
-                        </td>
-                        <td align="left">
-                            <asp:TextBox ID="txtProjectName" runat="server" Width="500px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Дизайнер
-                        </td>
-                        <td align="left">
-                            <asp:DropDownList ID="ddlDesigners" runat="server" Width="500" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Description
-                        </td>
-                        <td align="left">
-                            <asp:TextBox ID="txtDescription" TextMode="MultiLine" Height="100px" runat="server"
-                                Width="500px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            KeyWords
-                        </td>
-                        <td align="left">
-                            <asp:TextBox ID="txtKeyWords" runat="server" Width="500px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Title
-                        </td>
-                        <td align="left">
-                            <asp:TextBox ID="txtTitle" runat="server" Width="500px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             Категория
                         </td>
                         <td align="left">
-                            <dx:ASPxComboBox ID="cmbCategoriesPopUp" runat="server" TextField="Name" Width="300px"
-                                ValueField="ProjectCategoryID" CssFilePath="~/App_Themes/Aqua/{0}/styles.css"
-                                CssPostfix="Aqua" ShowShadow="False" ValueType="System.String" LoadingPanelImagePosition="Top"
-                                SpriteCssFilePath="~/App_Themes/Aqua/{0}/sprite.css" DataSourceID="ProjectCategoriesLinqDataSource">
-                                <LoadingPanelImage Url="~/App_Themes/Aqua/Editors/Loading.gif">
-                                </LoadingPanelImage>
-                                <DropDownButton>
-                                    <Image>
-                                        <SpriteProperties HottrackedCssClass="dxEditors_edtDropDownHover_Aqua" PressedCssClass="dxEditors_edtDropDownPressed_Aqua" />
-                                    </Image>
-                                </DropDownButton>
-                                <ValidationSettings>
-                                    <ErrorFrameStyle ImageSpacing="4px">
-                                        <ErrorTextPaddings PaddingLeft="4px" />
-                                    </ErrorFrameStyle>
-                                </ValidationSettings>
-                            </dx:ASPxComboBox>
+                            <asp:DropDownList ID="ddlCategories" runat="server" DataTextField="Name" DataValueField="PersonnelCategoryID" 
+                                DataSourceID="PersonnelCategoriesLinqDataSource" Width="500" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Текст
+                            Name
                         </td>
                         <td align="left">
-                            <dx:ASPxHtmlEditor ID="htmlEditor" runat="server">
-                            </dx:ASPxHtmlEditor>
+                            <asp:TextBox ID="txtName" runat="server" Width="500px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
+                        <td>
+                            Phone
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtPhone" runat="server" Width="500px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Email
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtEmail" runat="server" Width="500px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Image
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtImage" runat="server" Width="500px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Experience
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtExperience" runat="server" Width="500px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Styles
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtStyles" runat="server" Width="500px"></asp:TextBox>
+                        </td>
+                    </tr>
+<%--                    <tr>
                         <td>
                             Картинка
                         </td>
                         <td align="left">
                             <asp:FileUpload ID="fluImage" runat="server" />
                         </td>
-                    </tr>
+                    </tr>--%>
                     <tr>
                         <td colspan="2">
-                            <%--<dx:ASPxButton ID="btnAdd" runat="server" Text="Добавить" CssFilePath="~/App_Themes/Aqua/{0}/styles.css"
+                            <dx:ASPxButton ID="btnAdd" runat="server" Text="Сохранить" CssFilePath="~/App_Themes/Aqua/{0}/styles.css"
                                 CssPostfix="Aqua" OnClick="btnAdd_Click" SpriteCssFilePath="~/App_Themes/Aqua/{0}/sprite.css">
-                            </dx:ASPxButton>--%>
+                            </dx:ASPxButton>
                         </td>
                     </tr>
                 </table>

@@ -19,7 +19,6 @@ namespace ArtumDesignLab.Admin
         {
             if (!IsPostBack)
             {
-                BindCategories();
                 BindDesigners();
             }
         }
@@ -35,26 +34,27 @@ namespace ArtumDesignLab.Admin
             ddlDesigners.Items.Insert(0, new ListItem("---Выбрать дизайнера---", ""));
         }
 
-        private void BindCategories()
-        {
-            ProjectCategoryEntity projectCategoryEntity = new ProjectCategoryEntity();
-            var projectCategories = projectCategoryEntity.GetList().ToArray();
-            ddlCategories.DataSource = projectCategories;
-            ddlCategories.DataTextField = "Name";
-            ddlCategories.DataValueField = "ProjectCategoryID";
-            ddlCategories.DataBind();
-        }
-
         protected string GetProjectPhotoCount(int projectID)
         {
             ProjectPhotoEntity projectPhotos = new ProjectPhotoEntity();
             return projectPhotos.GetPhotosByProjectID(projectID).Count().ToString();
         }
 
+        private void ClearInput()
+        {
+            lblUpdateProjectId.Text = "";
+            txtProjectName.Text = "";
+            txtDescription.Text = "";
+            txtKeyWords.Text = "";
+            txtTitle.Text = "";
+            htmlEditor.Html = "";
+            txtPlace.Text = "";
+        }
+
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             int iCategotyId;
-            int.TryParse(cmbCategoriesPopUp.SelectedItem.Value.ToString(), out iCategotyId);
+            int.TryParse(ddlCategoriesPopUp.SelectedValue, out iCategotyId);
 
             int iProjectId;
             int.TryParse(lblUpdateProjectId.Text, out iProjectId);
@@ -130,6 +130,7 @@ namespace ArtumDesignLab.Admin
 
             popUpAddWork.ShowOnPageLoad = false;
             lblUpdateProjectId.Text = "";
+            ClearInput();
             grdProjects.DataBind();
         }
 
@@ -234,8 +235,8 @@ namespace ArtumDesignLab.Admin
                     txtKeyWords.Text = projectEntity.Entity.ProjectKeyWords;
                     txtTitle.Text = projectEntity.Entity.ProjectTitle;
                     htmlEditor.Html = projectEntity.Entity.ProjectText;
-                    cmbCategoriesPopUp.SelectedIndex = (int)projectEntity.Entity.ProjectCategoryID - 1;
-                    txtPlace.Text = projectEntity.Entity.Place.ToString();
+                    ddlCategoriesPopUp.SelectedValue = projectEntity.Entity.ProjectCategoryID.ToString();
+                    txtPlace.Text = projectEntity.Entity.Place != null ? projectEntity.Entity.Place.ToString() : "";
                 }
             }
 
@@ -382,8 +383,9 @@ namespace ArtumDesignLab.Admin
             }
         }
 
-        protected void btnAddGirl_Click(object sender, EventArgs e)
+        protected void btnAddProject_Click(object sender, EventArgs e)
         {
+            ClearInput();
             popUpAddWork.ShowOnPageLoad = true;
             popUpAddWork.HeaderText = "Добавить работу";
         }
