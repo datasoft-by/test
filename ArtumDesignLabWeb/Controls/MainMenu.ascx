@@ -27,6 +27,7 @@
 			<li><a href="<%= SiteHelper.GetWebPath("~/pages/Rabotasklientom.aspx") %>">Работа с клиентом</a></li>
             <li><a href="<%= SiteHelper.GetWebPath("~/pages/Advantages.aspx") %>">Наши преимущества</a></li>
             <li><a href="<%= SiteHelper.GetWebPath("~/pages/Answers.aspx") %>">Ответы дизайнера</a></li>
+            <li><a href="<%= SiteHelper.GetWebPath("~/pages/Styles.aspx") %>">Стили интерьера</a></li>
 		</ul>
     </li>
 	<li>
