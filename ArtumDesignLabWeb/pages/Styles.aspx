@@ -58,6 +58,23 @@ CodeFile="Styles.aspx.cs" Inherits="pages_Styles" %>
         в рамках данной статьи). Потому всякий человек может оформить свое жилище как по
         личному вкусу, так и в рамках одного из них.
     </p>
+    <p>
+    <ul>
+        <li><a href="http://www.artumstudio.ru/blog/sovremennyj_stil_dizajna/">Современный стиль дизайна</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_klassicheskom_stile/">Дизайн в классическом стиле</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/stil_modern_v_dizajne/">Стиль модерн в дизайне</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_yaponskom_stile/">Дизайн в японском стиле</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_stile_provans/">Дизайн в стиле прованс</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_stile_xajtek/">Дизайн в стиле хай-тек</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_stile_kantri/">Дизайн в стиле кантри</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_vostochnom_stile/">Дизайн в восточном стиле</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_stile_minimalizm/">Дизайн в стиле минимализм</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_morskom_stile/">Дизайн в морском стиле</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_stile_barokko/">Дизайн в стиле барокко</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/etnicheskij_stil_v_interere/">Этнический стиль в интерьере</a></li>
+        <li><a href="http://www.artumstudio.ru/blog/dizajn_v_stile_artdeko/">Дизайн в стиле арт-деко</a></li>
+    </ul>
+    </p>
 </asp:Content>
 
 

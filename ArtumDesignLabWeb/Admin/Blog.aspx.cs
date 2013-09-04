@@ -41,7 +41,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
         entity.Entity.BlogCategoryID = int.Parse(cmbCategories.SelectedItem.Value.ToString());
         entity.Entity.CreateDate = DateTime.Now;
         entity.Entity.Header = txtHeader.Text;
-        //entity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
+        entity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
         entity.Entity.MetaTitle = txtTitle.Text;
         entity.Entity.MetaDescription = txtDescription.Text;
         entity.Entity.MetaKeywords = txtKeywords.Text;
@@ -232,6 +232,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
         int categoryId = 0;
         if(Int32.TryParse(ddlCategories.SelectedValue, out categoryId))
             e.NewValues["BlogCategoryID"] = categoryId;
-        
+        e.NewValues["Url"] = SiteHelper.ConvertNameToUrl(txtH1.Text);
+        BlogGridView.DataBind();
     }
 }

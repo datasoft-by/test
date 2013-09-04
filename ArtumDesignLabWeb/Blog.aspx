@@ -39,7 +39,7 @@
                             <td><h3><a href="<%# SiteHelper.GetWebPath("~/Blog.aspx/") + Eval("Url") %>"><%# SiteHelper.ParseTextWithCustomTag(Eval("Header").ToString()) %></a></h3></td>
                         </tr>
                     </table>                                
-                    <img src="<%# SiteHelper.GetWebPath(Settings.BlogImagesFullSize) + Eval("Image") %>" width="624" height="214" alt="<%# SiteHelper.ParseTextWithCustomTag(Eval("Header").ToString()) %>" />
+                    <img src="<%# SiteHelper.GetWebPath(Settings.BlogImagesFullSize) + Eval("Image") %>" width="624" height="214" alt="" /><%--<%# SiteHelper.ParseTextWithCustomTag(Eval("Header").ToString()) %>--%>
                     <p><em><%# Eval("PreviewText") %></em><br />
                     <a href="<%# SiteHelper.GetWebPath("~/Blog.aspx/") + Eval("Url") %>">Читать далее</a></p>
                 </li>          
