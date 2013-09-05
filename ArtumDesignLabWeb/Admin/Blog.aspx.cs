@@ -52,6 +52,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
             int blogId;
             if (int.TryParse(e.CommandArgs.CommandArgument.ToString(), out blogId))
             {
+                lblUpdateBlogId.Text = blogId.ToString();
                 BlogEntity blogEntity = new BlogEntity();
                 blogEntity.Read(blogId);
                 cmbCategories.Value = blogEntity.Entity.BlogCategoryID;
@@ -97,7 +98,8 @@ public partial class Admin_Blog : System.Web.UI.Page {
         blogEntity.Entity.PreviewText = txtPreview.Text;
         blogEntity.Entity.Text = htmlText.Html;
 
-        if (!String.IsNullOrEmpty(imgImage.ImageUrl))
+        if (!String.IsNullOrEmpty(imgImage.ImageUrl) && 
+            (!String.IsNullOrEmpty(blogEntity.Entity.Image) && !imgImage.ImageUrl.Contains(blogEntity.Entity.Image)))
         {
             string tmpName = MapPath(imgImage.ImageUrl);
             string name = Guid.NewGuid() + ".jpg";
@@ -144,6 +146,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
     }
 
     private void ClearInput() {
+        lblUpdateBlogId.Text = "";
         txtHeader.Text = "";
         txtDescription.Text = "";
         txtTitle.Text = "";
