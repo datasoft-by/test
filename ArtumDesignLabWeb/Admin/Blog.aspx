@@ -8,11 +8,19 @@
     <table width="800px">
         <tr>
             <td>
+                Ид
+            </td>
+            <td>
+                <asp:Label ID="lblUpdateBlogId" runat="server"></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Категория
             </td>
             <td>
                 <dx:ASPxComboBox ID="cmbCategories" TextField="Name" ValueField="BlogCategoryID"
-                    runat="server" ValueType="System.String">
+                    runat="server" ValueType="System.Int32">
                 </dx:ASPxComboBox>
              </td>
         </tr>
@@ -94,9 +102,9 @@
     </table>
     Список постов
     <br />
-    <dx:ASPxGridView  ID="BlogGridView" runat="server" AutoGenerateColumns="False" DataSourceID="LinqDataSource1" KeyFieldName="BlogID" PreviewFieldName="PreviewText" EnableCallBacks="false"
-             SettingsPager-PageSize="50" OnHtmlRowCreated="BlogGridView_HtmlRowCreated" OnRowUpdating="BlogGridView_RowUpdating" OnRowDeleting="BlogGridView_RowDeleting"><%----%>
-        <Templates>
+    <dx:ASPxGridView  ID="BlogGridView" runat="server" AutoGenerateColumns="False" DataSourceID="LinqDataSource1" KeyFieldName="BlogID" 
+    PreviewFieldName="PreviewText" SettingsPager-PageSize="50" OnRowCommand="BlogGridView_RowCommand">
+<%--        <Templates>
             <EditForm>
                 Категория<br /><asp:DropDownList ID="ddlCategories" DataTextField="Name" DataValueField="BlogCategoryID"
                     runat="server" DataSourceID="BlogCategoriesDataSource" Width="500" />
@@ -137,11 +145,20 @@
                     </dx:ASPxGridViewTemplateReplacement>
                 </div>
             </EditForm>
-        </Templates>
+        </Templates>--%>
         <Columns>
-            <dx:GridViewCommandColumn VisibleIndex="0">
+            <dx:GridViewDataHyperLinkColumn VisibleIndex="0">
+                <DataItemTemplate>
+                    <asp:LinkButton ID="btnChange" runat="server" Text='Изменить'
+                        CommandName="Change" CommandArgument='<%# Eval("BlogID") %>'></asp:LinkButton>
+                    <br />
+                    <asp:LinkButton ID="btnDelete" runat="server" Text='Удалить' CommandName="Delete"
+                        CommandArgument='<%# Eval("BlogID") %>' OnClientClick="return confirm('Удалить, Вы уверены?');"></asp:LinkButton>
+               </DataItemTemplate>
+            </dx:GridViewDataHyperLinkColumn>
+            <%--<dx:GridViewCommandColumn VisibleIndex="0">
                 <ClearFilterButton Visible="True" />
-            </dx:GridViewCommandColumn>
+           </dx:GridViewCommandColumn>
 
             <dx:GridViewCommandColumn VisibleIndex="0">
                 <EditButton Visible="True">
@@ -150,7 +167,7 @@
                 </DeleteButton>
                 <ClearFilterButton Visible="True">
                 </ClearFilterButton>
-            </dx:GridViewCommandColumn>
+            </dx:GridViewCommandColumn>--%>
             <dx:GridViewDataTextColumn FieldName="BlogID" VisibleIndex="0" ReadOnly="True" 
                 Visible="False">
                 <EditFormSettings Visible="False" />
@@ -272,6 +289,6 @@
         </WhereParameters>
     </asp:LinqDataSource>
     
-    <p>Сгенерировать адреса: <asp:Button Visible="false" ID="Button2" runat="server" 
-            Text="Сгенерировать" onclick="Button2_Click" /></p>
+<%--    <p>Сгенерировать адреса: <asp:Button Visible="false" ID="Button2" runat="server" 
+            Text="Сгенерировать" onclick="Button2_Click" /></p>--%>
 </asp:Content>

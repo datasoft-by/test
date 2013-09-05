@@ -26,34 +26,81 @@ public partial class Admin_Blog : System.Web.UI.Page {
             cmbCategories.SelectedIndex = 0;
     }
 
-    protected void BlogGridView_HtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    protected void BlogGridView_RowCommand(object sender, DevExpress.Web.ASPxGridView.ASPxGridViewRowCommandEventArgs e)
     {
-        if (e.RowType == DevExpress.Web.ASPxGridView.GridViewRowType.EditForm)
+        if (e.CommandArgs.CommandName.ToString() == "Delete")
         {
-            DropDownList lst = (BlogGridView.FindEditFormTemplateControl("ddlCategories") as DropDownList);
-            lst.SelectedValue = e.GetValue("BlogCategoryID").ToString();
+            int blogId;
+            if (int.TryParse(e.CommandArgs.CommandArgument.ToString(), out blogId))
+            {
+                BlogEntity blogEntity = new BlogEntity();
+                blogEntity.Read(blogId);
+                try
+                {
+                    File.Delete(MapPath(Settings.BlogImagesFullSize) + blogEntity.Entity.Image);
+                    File.Delete(MapPath(Settings.BlogImagesThumbsMedium) + blogEntity.Entity.Image);
+                    File.Delete(MapPath(Settings.BlogImagesThumbsSmall) + blogEntity.Entity.Image);
+                }
+                catch { }
+                blogEntity.Delete();
+                BlogGridView.DataBind();
+            }
+        }
+
+        if (e.CommandArgs.CommandName.ToString() == "Change")
+        {
+            int blogId;
+            if (int.TryParse(e.CommandArgs.CommandArgument.ToString(), out blogId))
+            {
+                BlogEntity blogEntity = new BlogEntity();
+                blogEntity.Read(blogId);
+                cmbCategories.Value = blogEntity.Entity.BlogCategoryID;
+                txtHeader.Text = blogEntity.Entity.Header;
+                txtDescription.Text = blogEntity.Entity.MetaDescription;
+                txtTitle.Text = blogEntity.Entity.MetaTitle;
+                txtKeywords.Text = blogEntity.Entity.MetaKeywords;
+                txtPreview.Text = blogEntity.Entity.PreviewText;
+                htmlText.Html = blogEntity.Entity.Text;
+                if (!String.IsNullOrEmpty(blogEntity.Entity.Image))
+                {
+                    imgImage.ImageUrl = SiteHelper.GetWebPath(Settings.BlogImagesFullSize) + blogEntity.Entity.Image;
+                    imgImage.Visible = true;
+                }
+             }
         }
     }
 
+    //protected void BlogGridView_HtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    //{
+    //    if (e.RowType == DevExpress.Web.ASPxGridView.GridViewRowType.EditForm)
+    //    {
+    //        DropDownList lst = (BlogGridView.FindEditFormTemplateControl("ddlCategories") as DropDownList);
+    //        lst.SelectedValue = e.GetValue("BlogCategoryID").ToString();
+    //    }
+    //}
+
 
     protected void btnSave_Click(object sender, EventArgs e) {
-        BlogEntity entity = new BlogEntity();
-        entity.Entity.BlogCategoryID = int.Parse(cmbCategories.SelectedItem.Value.ToString());
-        entity.Entity.CreateDate = DateTime.Now;
-        entity.Entity.Header = txtHeader.Text;
-        entity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
-        entity.Entity.MetaTitle = txtTitle.Text;
-        entity.Entity.MetaDescription = txtDescription.Text;
-        entity.Entity.MetaKeywords = txtKeywords.Text;
-        entity.Entity.PreviewText = txtPreview.Text;
-        entity.Entity.Text = htmlText.Html;
+        int blogId;
+        BlogEntity blogEntity = new BlogEntity();
+        if (int.TryParse(lblUpdateBlogId.Text, out blogId))
+        {
+            blogEntity.Read(blogId);
+        }
+        blogEntity.Entity.BlogCategoryID = int.Parse(cmbCategories.SelectedItem.Value.ToString());
+        blogEntity.Entity.CreateDate = DateTime.Now;
+        blogEntity.Entity.Header = txtHeader.Text;
+        blogEntity.Entity.Url = SiteHelper.ConvertNameToUrl(txtHeader.Text);
+        blogEntity.Entity.MetaTitle = txtTitle.Text;
+        blogEntity.Entity.MetaDescription = txtDescription.Text;
+        blogEntity.Entity.MetaKeywords = txtKeywords.Text;
+        blogEntity.Entity.PreviewText = txtPreview.Text;
+        blogEntity.Entity.Text = htmlText.Html;
 
         if (!String.IsNullOrEmpty(imgImage.ImageUrl))
         {
             string tmpName = MapPath(imgImage.ImageUrl);
-
             string name = Guid.NewGuid() + ".jpg";
-
             using (Bitmap img = new Bitmap(tmpName))
             {
                 // Thumbnail medium
@@ -64,8 +111,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
                         rounded.Save(MapPath(Settings.BlogImagesThumbsMedium) + name, ImageUtils.GetJpegEncoder(), ImageUtils.GetEncoderJpegQuality(80L));
                     }
                 }
-
-                // Thumbnail small
+               // Thumbnail small
                 using (Bitmap cutted = ImageUtils.CutImage(img, 88, 72))
                 {
                     using (System.Drawing.Image rounded = ImageUtils.CreateRoundedImage(cutted, 5))
@@ -74,9 +120,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
                     }
                 }
             }
-
             imgCrop.Crop(tmpName);
-
             using (Bitmap img = new Bitmap(tmpName))
             {
                 using (Bitmap cutted = ImageUtils.CutImage(img, 624, 214))
@@ -87,15 +131,15 @@ public partial class Admin_Blog : System.Web.UI.Page {
                     }
                 }
             }
-
-            entity.Entity.Image = name;
+            blogEntity.Entity.Image = name;
         }
-        entity.Create();
+        if (blogId == 0)
+            blogEntity.Create();
+        else
+            blogEntity.Update();
         ClearInput();
-
         // Delete temporary image
         // File.Delete(tmpName);
-
         BlogGridView.DataBind();
     }
 
@@ -106,6 +150,7 @@ public partial class Admin_Blog : System.Web.UI.Page {
         txtKeywords.Text = "";
         txtPreview.Text = "";
         htmlText.Html = "";
+        cmbCategories.SelectedIndex = 0;
         imgImage.Visible = false;
     }
 
@@ -174,65 +219,66 @@ public partial class Admin_Blog : System.Web.UI.Page {
     //    }
     //}
 
-    protected void BlogGridView_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e) {
-        // Delete post image
+    //protected void BlogGridView_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e) {
+    //    // Delete post image
  
-        try {
-            string name = e.Values["Image"].ToString();
-            File.Delete(MapPath(Settings.BlogImagesThumbsSmall) + name);
-            File.Delete(MapPath(Settings.BlogImagesThumbsMedium) + name);
-            File.Delete(MapPath(Settings.BlogImagesFullSize) + name);
-        } catch { }
+    //    try {
+    //        string name = e.Values["Image"].ToString();
+    //        File.Delete(MapPath(Settings.BlogImagesThumbsSmall) + name);
+    //        File.Delete(MapPath(Settings.BlogImagesThumbsMedium) + name);
+    //        File.Delete(MapPath(Settings.BlogImagesFullSize) + name);
+    //    } catch { }
 
-        // Removing blog photos
-        int id = int.Parse(e.Values["BlogID"].ToString());
+    //    // Removing blog photos
+    //    int id = int.Parse(e.Values["BlogID"].ToString());
 
-        BlogPhotoEntity blogPhotoEntity = new BlogPhotoEntity();
+    //    BlogPhotoEntity blogPhotoEntity = new BlogPhotoEntity();
 
-        // Delete files
-        foreach (BlogPhoto photo in blogPhotoEntity.GetListByBlogID(id)) {
-            try {
-                File.Delete(MapPath(Settings.BlogImagesThumbsSmall) + photo.Name);
-                File.Delete(MapPath(Settings.BlogImagesThumbsMedium) + photo.Name);
-                File.Delete(MapPath(Settings.BlogImagesFullSize) + photo.Name);
-            } catch { }
-        }
+    //    // Delete files
+    //    foreach (BlogPhoto photo in blogPhotoEntity.GetListByBlogID(id)) {
+    //        try {
+    //            File.Delete(MapPath(Settings.BlogImagesThumbsSmall) + photo.Name);
+    //            File.Delete(MapPath(Settings.BlogImagesThumbsMedium) + photo.Name);
+    //            File.Delete(MapPath(Settings.BlogImagesFullSize) + photo.Name);
+    //        } catch { }
+    //    }
 
-        // Remove records from db
-        blogPhotoEntity.DeleteByBlogID(id);
-    }
+    //    // Remove records from db
+    //    blogPhotoEntity.DeleteByBlogID(id);
+    //}
+    
+    //protected void BlogGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e) {
+    //    ASPxGridView grid = sender as ASPxGridView;
+    //    ASPxHtmlEditor htmlEditor = BlogGridView.FindEditFormTemplateControl("TextHtmlEditor") as ASPxHtmlEditor;
+    //    ASPxTextBox txtboxTitle = BlogGridView.FindEditFormTemplateControl("txtBoxTitle") as ASPxTextBox;
+    //    ASPxTextBox txtH1 = BlogGridView.FindEditFormTemplateControl("txtH1") as ASPxTextBox;
+    //    ASPxTextBox txtPlaceholder = BlogGridView.FindEditFormTemplateControl("txtPlaceholder") as ASPxTextBox;
+    //    ASPxTextBox txtDescription = BlogGridView.FindEditFormTemplateControl("txtDescription") as ASPxTextBox;
+    //    ASPxTextBox txtKeywords = BlogGridView.FindEditFormTemplateControl("txtKeywords") as ASPxTextBox;
+    //    DropDownList ddlCategories = BlogGridView.FindEditFormTemplateControl("ddlCategories") as DropDownList;
+    //    e.NewValues["Text"] = htmlEditor.Html;
+    //    e.NewValues["MetaTitle"] = txtboxTitle.Text;
+    //    e.NewValues["Header"] = txtH1.Text;
+    //    e.NewValues["Placeholder"] = txtPlaceholder.Text;
+    //    e.NewValues["MetaDescription"] = txtDescription.Text;
+    //    e.NewValues["MetaKeywords"] = txtKeywords.Text;
+    //    int categoryId = 0;
+    //    if(Int32.TryParse(ddlCategories.SelectedValue, out categoryId))
+    //        e.NewValues["BlogCategoryID"] = categoryId;
+    //    e.NewValues["Url"] = SiteHelper.ConvertNameToUrl(txtH1.Text);
+    //    BlogGridView.DataBind();
+    //}
 
-    protected void Button2_Click(object sender, EventArgs e) {
-        BlogEntity blogEntity = new BlogEntity();
+    //protected void Button2_Click(object sender, EventArgs e) {
+    //    BlogEntity blogEntity = new BlogEntity();
 
-        foreach (var blog in blogEntity.GetList()) {
-            blog.Url = SiteHelper.ConvertNameToUrl(blog.Header);
-        }
+    //    foreach (var blog in blogEntity.GetList()) {
+    //        blog.Url = SiteHelper.ConvertNameToUrl(blog.Header);
+    //    }
 
-        blogEntity.Update();
+    //    blogEntity.Update();
 
-        BlogGridView.DataBind();
-    }
+    //    BlogGridView.DataBind();
+    //}
 
-    protected void BlogGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e) {
-        ASPxGridView grid = sender as ASPxGridView;
-        ASPxHtmlEditor htmlEditor = BlogGridView.FindEditFormTemplateControl("TextHtmlEditor") as ASPxHtmlEditor;
-        ASPxTextBox txtboxTitle = BlogGridView.FindEditFormTemplateControl("txtBoxTitle") as ASPxTextBox;
-        ASPxTextBox txtH1 = BlogGridView.FindEditFormTemplateControl("txtH1") as ASPxTextBox;
-        ASPxTextBox txtPlaceholder = BlogGridView.FindEditFormTemplateControl("txtPlaceholder") as ASPxTextBox;
-        ASPxTextBox txtDescription = BlogGridView.FindEditFormTemplateControl("txtDescription") as ASPxTextBox;
-        ASPxTextBox txtKeywords = BlogGridView.FindEditFormTemplateControl("txtKeywords") as ASPxTextBox;
-        DropDownList ddlCategories = BlogGridView.FindEditFormTemplateControl("ddlCategories") as DropDownList;
-        e.NewValues["Text"] = htmlEditor.Html;
-        e.NewValues["MetaTitle"] = txtboxTitle.Text;
-        e.NewValues["Header"] = txtH1.Text;
-        e.NewValues["Placeholder"] = txtPlaceholder.Text;
-        e.NewValues["MetaDescription"] = txtDescription.Text;
-        e.NewValues["MetaKeywords"] = txtKeywords.Text;
-        int categoryId = 0;
-        if(Int32.TryParse(ddlCategories.SelectedValue, out categoryId))
-            e.NewValues["BlogCategoryID"] = categoryId;
-        e.NewValues["Url"] = SiteHelper.ConvertNameToUrl(txtH1.Text);
-        BlogGridView.DataBind();
-    }
 }
